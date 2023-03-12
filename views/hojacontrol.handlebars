@@ -1,0 +1,130 @@
+
+    <table border="0" cellspacing="0" cellpadding="0" class="ta1">
+    <colgroup>
+        <col width="117"/><col width="177"/><col width="40"/><col width="415"/><col width="113"/><col width="123"/><col width="123"/><col width="205"/><col width="202"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="117"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/><col width="156"/>
+        </colgroup>
+    <tr class="ro1"><td colspan="3" rowspan="3" style="text-align:left;width:2.683cm; " class="ce1">
+        <div style="height:2.671cm;width:5.423cm; padding:0; " id="image1_png" class="P1">
+            <p><img style="height:2.671cm;width:5.423cm;" alt="" src=""/></p>
+        </div>
+        </td><td colspan="4" rowspan="3" style="text-align:left;width:9.491cm; " class="ce13">
+            <p>HOJA DE CONTROL DOCUMENTAL</p>
+        </td>
+        <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
+            <p>CÓDIGO: </p>
+        </td>
+    </tr>
+    <tr class="ro1">
+        <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
+            <p>FECHA DE ACTUALIZACIÓN: </p>
+        </td>
+    </tr>
+    <tr class="ro1">
+        <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
+            <p>VERSIÓN: 1</p>
+        </td>
+    </tr>
+    <tr class="ro2">
+        <td colspan="9" style="text-align:left;width:2.683cm; " class="ce2">
+            <p>A. DATOS GENERALES</p>
+        </td>
+    </tr>
+    <tr class="ro3">
+        <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
+            <p>Nombre oficina productora:</p>
+        </td>
+        <td colspan="5" style="text-align:left;width:2.575cm; " class="ce15">
+            <p>CATASTRO</p>
+        </td>
+    </tr>
+    <tr class="ro4">
+        <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
+            <p>Código serie / Nombre serie:</p>
+        </td>
+        <td colspan="5" style="text-align:left;width:2.575cm; " class="ce15"> </td>
+    </tr>
+    <tr class="ro4">
+            <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
+            <p>Código subserie / Nombre subserie:</p>
+        </td>
+        <td colspan="5" style="text-align:left;width:2.575cm; " class="ce15"> </td>
+    </tr>
+    <tr class="ro5">
+        <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
+            <p>Nombre del asunto :</p>
+        </td>
+        <td colspan="5" style="text-align:left;width:2.575cm; " class="ce16"> </td>
+    </tr>
+    <tr class="ro6">
+        <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
+            <p>Fecha de apertura hoja de control: </p>
+        </td>
+        <td colspan="2" style="text-align:left;width:2.575cm; " class="ce4"> </td>
+        <td colspan="2" style="text-align:left;width:2.822cm; " class="ce15">
+            <p>Hoja de control No.</p>
+        </td>
+        <td style="text-align:left;width:4.621cm; " class="ce9">
+            <p>1</p>
+        </td>
+    </tr>
+    <tr class="ro7">
+        <td colspan="9" style="text-align:left;width:2.683cm; " class="ce1">
+            <p>B. RELACIÓN DE DOCUMENTOS A ARCHIVAR </p>
+        </td>
+    </tr>
+    <tr class="ro8">
+        <td style="text-align:left;width:2.683cm; " class="ce4">
+            <p>Ítem</p>
+        </td>
+        <td style="text-align:left;width:4.059cm; " class="ce9">
+            <p>Fecha de ingreso (dd/mmm/aaaa)</p>
+        </td>
+        <td colspan="2" style="text-align:left;width:0.914cm; " class="ce9">
+            <p> Tipo documental</p>
+        </td>
+        <td style="text-align:left;width:2.575cm; " class="ce9">
+            <p>No. de folio que inicia</p>
+        </td>
+        <td style="text-align:left;width:2.822cm; " class="ce9">
+            <p>No. de folio que finaliza</p>
+        </td>
+        <td colspan="3" style="text-align:left;width:2.822cm; " class="ce9">
+            <p>Observaciones</p>
+        </td>
+    </tr> 
+
+        {{#each data}}
+        <tr class="ro9">
+            <td style="text-align:left;width:2.683cm; " class="ce4">
+                {{!-- <p>{{this.key = contador++}}</p> --}}
+            </td>
+            <td style="text-align:left;width:4.059cm; " class="ce4">{{this.fecha}} </td>
+            <td colspan="2" style="text-align:left;width:0.914cm; " class="ce11">{{this.tipo}} </td>
+            <td style="text-align:left;width:2.575cm; " class="ce4">{{this.firstFlo}} </td>
+            <td style="text-align:left;width:2.822cm; " class="ce4"> {{this.finishFlo}} </td>
+            <td colspan="3" style="text-align:left;width:2.822cm; " class="ce4">{{this.observaciones}} </td>        
+        </tr>
+      `;
+    {{/each}}
+
+    <tr class="ro1">
+    <td colspan="2" style="text-align:left;width:2.683cm; " class="ce6">
+        <p>Nombre completo de quien diligencia:</p>
+    </td>
+    <td colspan="7" style="text-align:left;width:0.914cm; " class="ce13"> </td>
+    </tr>
+    <tr class="ro19">
+    <td colspan="2" style="text-align:left;width:2.683cm; " class="ce6">
+        <p>Cargo :</p>
+    </td>
+    <td colspan="7" style="text-align:left;width:0.914cm; " class="ce13">
+        <p>AUXILIAR GESTIÓN DOCUMENTAL</p>
+    </td>
+    </tr>
+    <tr class="ro20">
+    <td colspan="2" style="text-align:left;width:2.683cm; " class="ce6">
+        <p>Firma :</p>
+    </td>
+    <td colspan="7" style="text-align:left;width:0.914cm; " class="ce14"> </td>
+    </tr>
+</table>
