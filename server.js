@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors')
+const path = require('path')
 const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const {generatePdfControl} = require('./modules/generatePdfFuntion')
@@ -10,6 +11,12 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+
+// habilitar imagenes
+app.use(express.static('public'));
+
+// ruta para archivos estaticos
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 
 // handlebars motor de plantillas para express
