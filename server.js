@@ -32,7 +32,6 @@ app.post('/generatecontrolpdf', async (req, res) => {
         }
     // Renderizar la plantilla HTML en un navegador virtual
     await generatePdfControl(html, res);
-
     });
 });
 
