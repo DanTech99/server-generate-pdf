@@ -34,7 +34,7 @@
                 <p>Nombre oficina productora:</p>
             </td>
             <td colspan="5" style="text-align:left;width:2.575cm; " class="ce15">
-                <p>CATASTRO</p>
+                <p>GESCCOL E.I.C.E.</p>
             </td>
         </tr>
         <tr class="ro4">
@@ -59,7 +59,11 @@
             <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
                 <p>Fecha de apertura hoja de control: </p>
             </td>
-            <td colspan="2" style="text-align:left;width:2.575cm; " class="ce4"> </td>
+            {{#each data}}
+                {{#if fechaInit}}
+                    <td colspan="2" style="text-align:left;width:2.575cm; " class="ce4"> {{fechaInit}} </td>
+                {{/if}}
+            {{/each}}
             <td colspan="2" style="text-align:left;width:2.822cm; " class="ce15">
                 <p>Hoja de control No.</p>
             </td>
@@ -96,7 +100,7 @@
         {{#each data}}
         <tr class="ro9">
             <td style="text-align:left;width:2.683cm; " class="ce4">
-                {{!-- <p>{{this.key = contador++}}</p> --}}
+               {{!--  <p>{{this.key}}</p> --}}
             </td>
             <td style="text-align:left;width:4.059cm; " class="ce4">{{this.fecha}} </td>
             <td colspan="2" style="text-align:left;width:0.914cm; " class="ce11">{{this.tipo}} </td>
@@ -104,7 +108,7 @@
             <td style="text-align:left;width:2.822cm; " class="ce4"> {{this.finishFlo}} </td>
             <td colspan="3" style="text-align:left;width:2.822cm; " class="ce4">{{this.observaciones}} </td>        
         </tr>
-    {{/each}}
+        {{/each}}
 
         <tr class="ro1">
         <td colspan="2" style="text-align:left;width:2.683cm; " class="ce6">

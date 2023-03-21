@@ -29,9 +29,9 @@ app.set('views', './views');
 
 app.post('/generatecontrolpdf', async (req, res) => {
     const data = req.body;
+    const fechaInit = data.fechaInit; // Asigna el valor de fechaInit de la petición a una variable
     console.log(data)
-    let contador = 1;
-    res.render(__dirname + '/views/hojacontrol', {data, contador}, async (err, html) => {
+    res.render(__dirname + '/views/hojacontrol', {data}, async (err, html) => {
         if (err) {
             console.error(err)
             res.status(500).send('error al cargar la plantilla');
