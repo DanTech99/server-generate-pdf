@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const {generatePdfControl} = require('./modules/generatePdfFuntion')
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Habilitar CORS
 app.use(cors());
@@ -29,7 +29,6 @@ app.set('views', './views');
 
 app.post('/generatecontrolpdf', async (req, res) => {
     const data = req.body;
-    const fechaInit = data.fechaInit; // Asigna el valor de fechaInit de la petición a una variable
     console.log(data)
     res.render(__dirname + '/views/hojacontrol', {data}, async (err, html) => {
         if (err) {

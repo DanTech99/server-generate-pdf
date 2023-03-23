@@ -5,14 +5,18 @@
         </colgroup>
         <tr class="ro1"><td colspan="3" rowspan="3" style="text-align:left;width:2.683cm; " class="ce1">
             <div style="height:2.671cm;width:5.423cm; padding:0; " id="image1_png" class="P1">
-                <p><img style="width:12.5rem; padding:10px" alt="" src="http://localhost:3000/static/logo-gesccol.png"/></p>
+                <p><img style="width:12.5rem; padding:10px" alt="" src="http://localhost:3001/static/logo-gesccol.png"/></p>
             </div>
             </td><td colspan="4" rowspan="3" style="text-align:left;width:9.491cm; " class="ce13">
                 <p>HOJA DE CONTROL DOCUMENTAL GESCCOL E.I.C.E.</p>
-            </td>   
-            <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
-                <p>CÓDIGO: </p>
             </td>
+            {{#each data}}
+                {{#if radicado}}
+                <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
+                    <p>RADICADO: {{radicado}}</p>
+                </td>
+                {{/if}}
+            {{/each}}
         </tr>
         <tr class="ro1">
             <td colspan="2" style="text-align:left;width:4.694cm; " class="ce24">
@@ -53,7 +57,11 @@
             <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
                 <p>Nombre del asunto :</p>
             </td>
-            <td colspan="5" style="text-align:left;width:2.575cm; " class="ce16"> </td>
+             {{#each data}}
+                {{#if radicado}}
+                    <td colspan="5" style="text-align:left;width:2.575cm; " class="ce4">{{radicado}} </td>
+                 {{/if}}
+            {{/each}}
         </tr>
         <tr class="ro6">
             <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
@@ -100,7 +108,7 @@
         {{#each data}}
         <tr class="ro9">
             <td style="text-align:left;width:2.683cm; " class="ce4">
-               {{!--  <p>{{this.key}}</p> --}}
+               {{this.id}}
             </td>
             <td style="text-align:left;width:4.059cm; " class="ce4">{{this.fecha}} </td>
             <td colspan="2" style="text-align:left;width:0.914cm; " class="ce11">{{this.tipo}} </td>
