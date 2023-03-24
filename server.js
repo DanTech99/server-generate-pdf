@@ -26,6 +26,13 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
+// Agregar encabezados de CORS a todas las respuestas
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://format-generator.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
 
 app.post('/generatecontrolpdf', async (req, res) => {
     const data = req.body;
