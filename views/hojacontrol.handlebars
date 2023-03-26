@@ -59,7 +59,7 @@
             </td>
              {{#each data}}
                 {{#if radicado}}
-                    <td colspan="5" style="text-align:left;width:2.575cm; " class="ce4">{{radicado}} </td>
+                    <td colspan="5" style="text-align:left;width:2.575cm; " class="ce4">Radicado {{radicado}} </td>
                  {{/if}}
             {{/each}}
         </tr>
@@ -67,11 +67,9 @@
             <td colspan="4" style="text-align:left;width:2.683cm; " class="ce3">
                 <p>Fecha de apertura hoja de control: </p>
             </td>
-            {{#each data}}
-                {{#if fechaInit}}
-                    <td colspan="2" style="text-align:left;width:2.575cm; " class="ce4"> {{fechaInit}} </td>
-                {{/if}}
-            {{/each}}
+  
+                    <td colspan="2" style="text-align:left;width:2.575cm; " class="ce4"> {{fechaFormateada}}</td>
+          
             <td colspan="2" style="text-align:left;width:2.822cm; " class="ce15">
                 <p>Hoja de control No.</p>
             </td>
