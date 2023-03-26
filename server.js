@@ -91,7 +91,12 @@ app.set('views', './views');
 app.post('/generatecontrolpdf', async (req, res) => {
     const data = req.body;
     console.log(data)
-    res.render(__dirname + '/views/hojacontrol', {data}, async (err, html) => {
+    const fechaActual = new Date();
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    const formatter = new Intl.DateTimeFormat('es-CO', options);
+    const fechaFormateada = formatter.format(fechaActual);
+
+    res.render(__dirname + '/views/hojacontrol', {data, fechaFormateada}, async (err, html) => {
         if (err) {
             console.error(err)
             res.status(500).send('error al cargar la plantilla');
