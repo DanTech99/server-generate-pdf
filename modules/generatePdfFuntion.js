@@ -1,5 +1,10 @@
+const helpers = require('./helpers').default
 const puppeteer = require('puppeteer');
+
 async function generatePdfControl(html, res) {
+    // Registra los helpers de Handlebars
+    helpers(exphbs.create({}));
+
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setContent(html);
