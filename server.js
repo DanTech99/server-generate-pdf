@@ -8,6 +8,8 @@
  * @constant exphbs
  * @constant generatePdfControl
  * @constant mysql
+ * @constant exceljs
+ * @constant fs
  * -----------------------------------------------------------------------------------------------------------
  */
 const express = require('express');
@@ -76,12 +78,12 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 // Agregar encabezados de CORS a todas las respuestas
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://format-generator.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  });
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', 'https://format-generator.vercel.app');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+//   });
 
 /**
  * ------------------------------------------------------------------------------
@@ -122,26 +124,10 @@ app.post('/generatecontrolpdf', async (req, res) => {
 
 
 
-
-
-
 /**
- * -----------------------------------------------------
- * -----------------------------------------------------
- */
-
-
-
-
-
-
-
-
-
-
-
-/**
- * ruta para procesar las solicitudes del formulario
+ * -----------------------------------------------------------------------------------------------------------------------------
+ * ruta para procesar las solicitudes del formulario y generar una hoja de excel con los datos que llegaran del cliente
+ * -----------------------------------------------------------------------------------------------------------------------------
  */
 
 // Conectarse a la base de datos MySQL
@@ -152,13 +138,13 @@ const connection = mysql.createConnection({
     database: 'users'
   });
   
-    connection.connect((error) => {
-        if (error) {
-            console.error('error conectando a la base de datos', error)
-            return;
-        }
-        console.log('coneccion establecida con Mysql')
-    })
+  connection.connect((error) => {
+      if (error) {
+          console.error('error conectando a la base de datos', error)
+          return;
+      }
+      console.log('coneccion establecida con Mysql')
+  })
   
   // Definir la ruta para procesar las solicitudes del formulario
   app.post('/form-generate-excel', async (req, res) => {
@@ -200,27 +186,17 @@ const connection = mysql.createConnection({
           });
   
           // Escribir el libro de Excel en un archivo
-          workbook.xlsx.writeFile('form_data.xlsx')
-            .then(() => {
+          workbook.xlsx.writeBuffer()
+            .then(buffer => {
               console.log('Excel file saved');
   
-             // Leer el archivo y enviarlo como respuesta
-                const file = `${__dirname}/form_data.xlsx`;
-                res.download(file, (error) => {
-                if (error) {
-                    console.error('Could not download Excel file', error);
-                    res.status(500).send('Internal server error');
-                } else {
-                    // Eliminar el archivo después de que se ha descargado
-                    fs.unlink(file, (error) => {
-                    if (error) {
-                        console.error('Could not delete Excel file', error);
-                    } else {
-                        console.log('Excel file deleted');
-                    }
-                    });
-                }
-                });
+              // Enviar el archivo como respuesta binaria
+              res.writeHead(200, {
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'Content-Disposition': 'attachment; filename=form_data.xlsx',
+                'Content-Length': buffer.length
+              });
+              res.end(buffer);
             })
             .catch(error => {
               console.error('Could not save Excel file', error);
@@ -232,7 +208,8 @@ const connection = mysql.createConnection({
       console.error('Could not process form submission', error);
       res.status(500).send('Internal server error');
     }
-  });
+});
+
 
 
 app.listen(port, () => console.log(`server listening on port:  ${port}`));
