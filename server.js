@@ -7,6 +7,7 @@
  * @constant bodyParser
  * @constant exphbs
  * @constant generatePdfControl
+ * @constant mysql
  * -----------------------------------------------------------------------------------------------------------
  */
 const express = require('express');
@@ -14,7 +15,11 @@ const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
-const {generatePdfControl} = require('./modules/generatePdfFuntion')
+const mysql = require('mysql')
+const ExcelJS = require('exceljs');
+const fs = require('fs');
+const {generatePdfControl} = require('./modules/generatePdfFuntion');
+
 
 /**
  * configuracion de la aplicacion
@@ -22,6 +27,7 @@ const {generatePdfControl} = require('./modules/generatePdfFuntion')
  * @constant app
  */
 const app = express();
+app.use(express.json());
 const port = process.env.PORT || 3001;
 
 // Habilitar CORS
@@ -113,6 +119,120 @@ app.post('/generatecontrolpdf', async (req, res) => {
     await generatePdfControl(html, res);
     });
 });
+
+
+
+
+
+
+/**
+ * -----------------------------------------------------
+ * -----------------------------------------------------
+ */
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * ruta para procesar las solicitudes del formulario
+ */
+
+// Conectarse a la base de datos MySQL
+const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'users'
+  });
+  
+    connection.connect((error) => {
+        if (error) {
+            console.error('error conectando a la base de datos', error)
+            return;
+        }
+        console.log('coneccion establecida con Mysql')
+    })
+  
+  // Definir la ruta para procesar las solicitudes del formulario
+  app.post('/form-generate-excel', async (req, res) => {
+    try {
+      // Almacenar los datos del formulario en la base de datos
+      const { name, email } = req.body;
+      const formData = { name, email };
+      const query = 'INSERT INTO form_data SET ?';
+      connection.query(query, formData, (error, result) => {
+        if (error) {
+          console.error('Could not process form submission', error);
+          res.status(500).send('Internal server error');
+          return;
+        }
+  
+        console.log('Form data saved');
+  
+        // Consultar los datos almacenados en la base de datos
+        const query = 'SELECT * FROM form_data';
+        connection.query(query, (error, results) => {
+          if (error) {
+            console.error('Could not retrieve form data', error);
+            res.status(500).send('Internal server error');
+            return;
+          }
+  
+          console.log('Form data retrieved');
+  
+          // Crear una hoja de trabajo
+          const workbook = new ExcelJS.Workbook();
+          const worksheet = workbook.addWorksheet('Form Data');
+          worksheet.columns = [
+            { header: 'ID', key: 'id', width: 10 },
+            { header: 'Name', key: 'name', width: 30 },
+            { header: 'Email', key: 'email', width: 30 }
+          ];
+          results.forEach((result, index) => {
+            worksheet.addRow({ id: index + 1, name: result.name, email: result.email });
+          });
+  
+          // Escribir el libro de Excel en un archivo
+          workbook.xlsx.writeFile('form_data.xlsx')
+            .then(() => {
+              console.log('Excel file saved');
+  
+             // Leer el archivo y enviarlo como respuesta
+                const file = `${__dirname}/form_data.xlsx`;
+                res.download(file, (error) => {
+                if (error) {
+                    console.error('Could not download Excel file', error);
+                    res.status(500).send('Internal server error');
+                } else {
+                    // Eliminar el archivo después de que se ha descargado
+                    fs.unlink(file, (error) => {
+                    if (error) {
+                        console.error('Could not delete Excel file', error);
+                    } else {
+                        console.log('Excel file deleted');
+                    }
+                    });
+                }
+                });
+            })
+            .catch(error => {
+              console.error('Could not save Excel file', error);
+              res.status(500).send('Internal server error');
+            });
+        });
+      });
+    } catch (error) {
+      console.error('Could not process form submission', error);
+      res.status(500).send('Internal server error');
+    }
+  });
 
 
 app.listen(port, () => console.log(`server listening on port:  ${port}`));
