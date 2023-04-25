@@ -17,9 +17,6 @@ const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
-const mysql = require('mysql')
-const ExcelJS = require('exceljs');
-const fs = require('fs');
 const {generatePdfControl} = require('./modules/generatePdfFuntion');
 
 
