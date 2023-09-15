@@ -82,6 +82,19 @@ app.set('views', './views');
     next();
   }); 
 
+
+  // ruta principal
+app.get('/', (req, res) => {
+    // mostrar un json con la informacion de la api
+    res.json({
+        'message': 'API para generar formatos de hojas de control de calidad',
+        'endpoints': {
+            'generatecontrolpdf': 'ruta para generar un archivo PDF a partir de una plantilla HTML',
+        }
+
+    });
+    });
+
 /**
  * ------------------------------------------------------------------------------
  * ruta para genetar un archivo PDF a partir de una plantilla HTML.
