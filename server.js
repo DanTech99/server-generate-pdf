@@ -87,9 +87,11 @@ app.set('views', './views');
 app.get('/', (req, res) => {
     // mostrar un json con la informacion de la api
     res.json({
-        'message': 'API para generar formatos de hojas de control de calidad',
+        'message': 'API para generar formatos de hojas de control',
         'endpoints': {
-            'generatecontrolpdf': 'ruta para generar un archivo PDF a partir de una plantilla HTML',
+            '/generatecontrolpdf': 'ruta para generar un archivo PDF a partir de una plantilla HTML',
+            '/generatehistoryclinic': 'ruta para generar un archivo PDF a partir de una plantilla HTML sobre historia clinica',
+            '/savehistoryclinic': 'ruta para recibir la data del cliente y almacenarla en una base de datos mysql'
         }
 
     });
@@ -97,7 +99,7 @@ app.get('/', (req, res) => {
 
 /**
  * ------------------------------------------------------------------------------
- * ruta para genetar un archivo PDF a partir de una plantilla HTML.
+ * ruta para genetar un archivo PDF a partir de una plantilla HTML para la app de format generate radicados gesccol.
  * @function
  * @param {string}'/generatecontrolpdf' - ruta para generar el pdf
  * @param {function} async (req. res) - funcion que maneja la solicitud  POST para generar el PDF
@@ -131,6 +133,24 @@ app.post('/generatecontrolpdf', async (req, res) => {
     await generatePdfControl(html, res);
     });
 });
+
+/**
+ * ---------------------------------------------------------------------------------
+ * ruta para generar un archivo PDF a partir de una plantilla HTML para la app de RIE-HISTORY-CLINIC
+ * @description ruta para recibir la data del cliente y generar un archivo PDF a partir de una plantilla HTML
+ * @param {string}'/generatehistoryclinic' - ruta para generar el pdf
+ */
+
+
+
+
+
+
+/**
+ * ---------------------------------------------------------------------------------
+ * @description ruta para recibir la data del cliente y almacenarla en una base de datos mysql
+ * @param {string}'/savehistoryclinic' - ruta para almacenar la data de la historia clinica en una base de datos mysql
+ */
 
 
 
