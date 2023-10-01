@@ -102,12 +102,8 @@ app.get('/', (req, res) => {
  * ruta para genetar un archivo PDF a partir de una plantilla HTML para la app de format generate radicados gesccol.
  * @function
  * @param {string}'/generatecontrolpdf' - ruta para generar el pdf
- * @param {function} async (req. res) - funcion que maneja la solicitud  POST para generar el PDF
- * @param {Object} req.body - cuerpo de la solicitud POST, que debe contener los datos necesarios para generar la plantilla
- * @param {object} data - objeto qu contiene los datos necesarios para generar la plantilla
  * @param {function} res.render() - funcion para renderizar la plantilla HTML con los datos proporcionados
  * @param {string}__dirname + '/views/hojacontrol' - ruta de la plantilla HTML que se va a renderizar
- * @param {function} async (err, html) - funcion que maneja el resultado del renderizado de la plantilla HTML
  * @param {object} err - objeto que contiene informacion sobre errores que se han producido
  * @param {string} html - cadena que contiene el resultado del renderizado de la plantilla html
  * @param {function} generatePdfControl() - funcion que genera un archivo PDF a partir de una cadena HTML
