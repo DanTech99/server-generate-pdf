@@ -69,16 +69,24 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
  * @function
  */
 
-const hbs = exphbs.create();
+const hbs = exphbs.create({
+    defaultLayout: 'main_history',
+    helpers: {
+        eq: function(arg1, arg2) {
+          return arg1 === arg2;
+        }
+    }
+});
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 // Agregar encabezados de CORS a todas las respuestas
  app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://format-generator.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'https://rie-control.vercel.app/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://format-generator.vercel.app/');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); 
     next();
   }); 
 
@@ -136,7 +144,19 @@ app.post('/generatecontrolpdf', async (req, res) => {
  * @description ruta para recibir la data del cliente y generar un archivo PDF a partir de una plantilla HTML
  * @param {string}'/generatehistoryclinic' - ruta para generar el pdf
  */
-
+    app.post('/generatehistoryclinic', async (req, res) => {
+        const data = req.body;
+        console.log(data)
+        res.render(__dirname + '/views/historyclinic', {data}, async (err, html) => {
+            if (err) {
+                console.error(err)
+                res.status(500).send('error al cargar la plantilla');
+                return;
+            }
+        // Renderizar la plantilla HTML en un navegador virtual
+        await generatePdfControl(html, res);
+        });
+    });
 
 
 
