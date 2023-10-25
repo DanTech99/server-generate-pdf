@@ -18,7 +18,21 @@ const path = require('path')
 const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const {generatePdfControl} = require('./modules/generatePdfFuntion');
+require('dotenv').config();
 
+// configurar la base de datos
+const mysql = require('mysql2')
+const connection = mysql.createConnection(process.env.DATABASE_URL)
+
+// Conectar a la base de datos
+connection.connect((err) => {
+    if (err) {
+      console.error('Error al conectar a la base de datos: ', err);
+      return;
+    }
+    console.log('Conectado a la base de datos MySQL');
+  });
+  
 
 /**
  * configuracion de la aplicacion
@@ -52,6 +66,7 @@ app.use(express.static('public'));
 
 
 
+
 /**
  * -----------------------------------------------------------------------------
  * Middleware para servir archivos estaticos desde un directorio especifico
@@ -65,8 +80,6 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 
 /**
  * configuracion de Handlebars como motor de plantillas para express
- * @constant hbs
- * @function
  */
 
 const hbs = exphbs.create({
@@ -118,7 +131,7 @@ app.get('/', (req, res) => {
  * @param {function} res - objeto de respuesta que se envia al cliente
  * ----------------------------------------------------------------------------
  */
-app.post('/generatecontrolpdf', async (req, res) => {
+app.post('/api/generatecontrolpdf', async (req, res) => {
     const data = req.body;
     console.log(data)
     const fechaActual = new Date();
@@ -143,7 +156,7 @@ app.post('/generatecontrolpdf', async (req, res) => {
  * @description ruta para recibir la data del cliente y generar un archivo PDF a partir de una plantilla HTML
  * @param {string}'/generatehistoryclinic' - ruta para generar el pdf
  */
-    app.post('/generatehistoryclinic', async (req, res) => {
+    app.post('/api/generatehistoryclinic', async (req, res) => {
         const data = req.body;
         console.log(data)
         res.render(__dirname + '/views/historyclinic', {data}, async (err, html) => {
@@ -162,11 +175,135 @@ app.post('/generatecontrolpdf', async (req, res) => {
 
 
 /**
- * ---------------------------------------------------------------------------------
- * @description ruta para recibir la data del cliente y almacenarla en una base de datos mysql
- * @param {string}'/savehistoryclinic' - ruta para almacenar la data de la historia clinica en una base de datos mysql
+ * @description rutas para el manejo de la base de datos
+ * @param {string}'/savehistoryclinic' - ruta para guardar los registros en la base de datos
+ * @param {string} '/getData' - ruta para obtener los registros de la base de datos
  */
 
+app.post('/api/savehistoryclinic', (req, res) => {
+    const {data} = req.body;
+
+    console.log(data)
+
+    const query = `
+        INSERT INTO pacientes (
+            odontologo,
+            paciente,
+            contacto,
+            cedula,
+            acudiente,
+            ocupacion,
+            direccion,
+            ciudad,
+            edad,
+            nucleofamiliar,
+            nacimiento,
+            fechatratamiento,
+            estadogeneral,
+            parto,
+            enfermedadescronicas,
+            alteracionescongenitas,
+            traumatismos,
+            intervencionesquirurgicas,
+            tratamientoprevio,
+            hastaqueedad,
+            observaciones,
+            patronfacial,
+            perfil,
+            asimetria,
+            alturafacial,
+            anchofacial,
+            perfilmaxilar,
+            perfilmandibular,
+            surcolabiomenton,
+            labiosenreposo,
+            perfillabial,
+            respiracion,
+            actividadcomisural,
+            actividadlingual,
+            labiosuperior,
+            labioinferior,
+            masetero,
+            mentoniano,
+            habitosdesuccion,
+            plantratamiento,
+            tecnicaaparato,
+            tiempoestimadotratamiento,
+            pronostico
+        ) VALUES (
+            '${data.odontologo} ',
+            '${data.paciente}',
+            '${data.contacto}',
+            '${data.cedula}',
+            '${data.acudiente}',
+            '${data.ocupacion}',
+            '${data.direccion}',
+            '${data.ciudad}',
+            ${data.edad},
+            '${data.nucleofamiliar}',
+            '${data.nacimiento}',
+            '${data.fechatratamiento}',
+            '${data.estadogeneral}',
+            '${data.parto}',
+            '${data.enfermedadescronicas}',
+            '${data.alteracionescongenitas}',
+            '${data.traumatismos}',
+            '${data.intervencionesquirurgicas}',
+            '${data.tratamientoprevio}',
+            '${data.hastaqueedad}',
+            '${data.observaciones}',
+            '${data.patronfacial}',
+            '${data.perfil}',
+            '${data.asimetria}',
+            '${data.alturafacial}',
+            '${data.anchofacial}',
+            '${data.perfilmaxilar}',
+            '${data.perfilmandibular}',
+            '${data.surcolabiomenton}',
+            '${data.labiosenreposo}',
+            '${data.perfillabial}',
+            '${data.respiracion}',
+            '${data.actividadcomisural}',
+            '${data.actividadlingual}',
+            '${data.labiosuperior}',
+            '${data.labioinferior}',
+            '${data.masetero}',
+            '${data.mentoniano}',
+            '${data.habitosdesuccion}',
+            '${data.plantratamiento}',
+            '${data.tecnicaaparato}',
+            '${data.tiempoestimadotratamiento}',
+            '${data.pronostico}'
+        )
+    `;
+
+    connection.query(query, (error, results) => {
+        if (error) {
+            console.error("Error al insertar datos:", error);
+            res.status(500).json({ error: "Error al insertar datos" });
+        } else {
+            res.status(200).json({ message: "Datos insertados con éxito" });
+        }
+    });
+})
+
+
+
+app.get('/api/getData', (req, res) => {
+    // Consulta SQL para seleccionar todos los registros de la tabla
+    const query = 'SELECT * FROM pacientes';
+    
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error al obtener datos de la base de datos: ', err);
+        res.status(500).json({ error: 'Error al obtener datos de la base de datos' });
+        return;
+      }
+      
+      console.log('Datos obtenidos de la base de datos');
+      res.status(200).json(results);
+    });
+  });
 
 
 
