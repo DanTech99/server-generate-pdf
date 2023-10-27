@@ -83,7 +83,9 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
  */
 
 const hbs = exphbs.create({
-    defaultLayout: 'main_history',
+    layoutsDir: __dirname + '/views/layouts', // directorio de layouts
+    defaultLayout: 'main',
+    extname: '.handlebars',
     helpers: {
         eq: function(arg1, arg2) {
           return arg1 === arg2;
@@ -109,9 +111,9 @@ app.get('/', (req, res) => {
     res.json({
         'message': 'API para generar formatos de hojas de control',
         'endpoints': {
-            '/generatecontrolpdf': 'ruta para generar un archivo PDF a partir de una plantilla HTML',
-            '/generatehistoryclinic': 'ruta para generar un archivo PDF a partir de una plantilla HTML sobre historia clinica',
-            '/savehistoryclinic': 'ruta para recibir la data del cliente y almacenarla en una base de datos mysql'
+            'api/generatecontrolpdf': 'ruta para generar un archivo PDF a partir de una plantilla HTML',
+            'api/generatehistoryclinic': 'ruta para generar un archivo PDF a partir de una plantilla HTML sobre historia clinica',
+            'api/savehistoryclinic': 'ruta para recibir la data del cliente y almacenarla en una base de datos mysql'
         }
 
     });
@@ -159,6 +161,8 @@ app.post('/api/generatecontrolpdf', async (req, res) => {
     app.post('/api/generatehistoryclinic', async (req, res) => {
         const data = req.body;
         console.log(data)
+        // cambiart el layout a main antes de renderizar
+    hbs.handlebars.registerPartial('main', 'main_history.handlebars');
         res.render(__dirname + '/views/historyclinic', {data}, async (err, html) => {
             if (err) {
                 console.error(err)
