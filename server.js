@@ -309,7 +309,7 @@ app.get('/api/getData', (req, res) => {
     // Consulta SQL para seleccionar todos los registros de la tabla pacientes
     const query = 'SELECT * FROM pacientes';
     
-    connection.query(query, (err, results) => {
+    client.query(query, (err, results) => {
       if (err) {
         console.error('Error al obtener datos de la base de datos: ', err);
         res.status(500).json({ error: 'Error al obtener datos de la base de datos' });
