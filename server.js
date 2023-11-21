@@ -306,7 +306,7 @@ app.post('/api/savehistoryclinic', (req, res) => {
 
 
 app.get('/api/getData', (req, res) => {
-    // Consulta SQL para seleccionar todos los registros de la tabla
+    // Consulta SQL para seleccionar todos los registros de la tabla pacientes
     const query = 'SELECT * FROM pacientes';
     
     connection.query(query, (err, results) => {
