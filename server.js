@@ -19,19 +19,29 @@ const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const {generatePdfControl} = require('./modules/generatePdfFuntion');
 require('dotenv').config();
+const { Client } = require('pg')
 
-// configurar la base de datos
-const mysql = require('mysql2')
-const connection = mysql.createConnection(process.env.DATABASE_URL)
+const client = new Client({
+  user: 'postgres',
+  host: 'db.wamxoygslhrofzdwditu.supabase.co',
+  database: 'postgres',
+  password: 'QriwEjS5wU5Yfwgy',
+  port: 6543,
+  ssl: { rejectUnauthorized: false }
+})
 
-// Conectar a la base de datos
-connection.connect((err) => {
-    if (err) {
-      console.error('Error al conectar a la base de datos: ', err);
-      return;
-    }
-    console.log('Conectado a la base de datos MySQL');
-  });
+client.connect()
+
+// mensaje de conexion exitosa
+client.query('SELECT NOW()', (err, res) => {
+  if (err) {
+    console.log(err.stack)
+  } else {
+    console.log('conectado a la base de datos')
+  }
+})
+
+
   
 
 /**
@@ -102,7 +112,9 @@ app.set('views', './views');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type'); 
     next();
-  }); 
+  });
+
+
 
 
   // ruta principal
@@ -281,7 +293,7 @@ app.post('/api/savehistoryclinic', (req, res) => {
         )
     `;
 
-    connection.query(query, (error, results) => {
+    client.query(query, (error, results) => {
         if (error) {
             console.error("Error al insertar datos:", error);
             res.status(500).json({ error: "Error al insertar datos" });
