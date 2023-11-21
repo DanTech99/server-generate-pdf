@@ -19,9 +19,10 @@ const bodyParser = require('body-parser');
 const exphbs  = require('express-handlebars');
 const {generatePdfControl} = require('./modules/generatePdfFuntion');
 require('dotenv').config();
+const { createClient } = require('@supabase/supabase-js');
 const { Client } = require('pg')
 
-const client = new Client({
+const postgresClient  = new Client({
   user: 'postgres',
   host: 'db.wamxoygslhrofzdwditu.supabase.co',
   database: 'postgres',
@@ -30,16 +31,21 @@ const client = new Client({
   ssl: { rejectUnauthorized: false }
 })
 
-client.connect()
+postgresClient .connect()
 
 // mensaje de conexion exitosa
-client.query('SELECT NOW()', (err, res) => {
+postgresClient .query('SELECT NOW()', (err, res) => {
   if (err) {
     console.log(err.stack)
   } else {
     console.log('conectado a la base de datos')
   }
 })
+
+// Supabase configuration
+const supabaseUrl = 'https://wamxoygslhrofzdwditu.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhbXhveWdzbGhyb2Z6ZHdkaXR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDA1OTM2MjUsImV4cCI6MjAxNjE2OTYyNX0.2btOnNHOmFqCt8JNlUwyBC44U8geD-zmUFGqZIWts1U'; // Replace with your actual Supabase API key
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 
   
@@ -307,21 +313,32 @@ app.post('/api/savehistoryclinic', (req, res) => {
 
 // obtener los datos de la base de datos
 
-app.get('/api/getData', (req, res) => {
-    const query = `
-        SELECT * FROM pacientes;
-    `;
-
-    client.query(query, (error, results) => {
-        if (error) {
-            console.error("Error al obtener datos:", error);
-            res.status(500).json({ error: "Error al obtener datos" });
-        } else {
-            res.status(200).json(results.rows);
-        }
-    });
-})
-
+app.get('/api/getData', async (req, res) => {
+    try {
+      // Consulta a la base de datos de PostgreSQL
+      const postgresQuery = 'SELECT * FROM pacientes';
+      const postgresResult = await postgresClient.query(postgresQuery);
+  
+      // Consulta a la base de datos de Supabase
+      const supabaseQuery = 'SELECT * FROM pacientes';
+      const { data: supabaseResult, error: supabaseError } = await supabase
+        .from('pacientes')
+        .select('*');
+  
+      if (supabaseError) {
+        console.error('Error al obtener datos de Supabase:', supabaseError);
+        res.status(500).json({ error: 'Error al obtener datos de Supabase' });
+      } else {
+        res.status(200).json({
+          postgresData: postgresResult.rows,
+          supabaseData: supabaseResult,
+        });
+      }
+    } catch (error) {
+      console.error('Error en la solicitud:', error);
+      res.status(500).json({ error: 'Error en la solicitud' });
+    }
+  });
 
 
 
