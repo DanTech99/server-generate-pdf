@@ -305,21 +305,22 @@ app.post('/api/savehistoryclinic', (req, res) => {
 
 
 
+// obtener los datos de la base de datos
+
 app.get('/api/getData', (req, res) => {
-    // Consulta SQL para seleccionar todos los registros de la tabla pacientes
-    const query = 'SELECT * FROM pacientes';
-    
-    client.query(query, (err, results) => {
-      if (err) {
-        console.error('Error al obtener datos de la base de datos: ', err);
-        res.status(500).json({ error: 'Error al obtener datos de la base de datos' });
-        return;
-      }
-      
-      console.log('Datos obtenidos de la base de datos');
-      res.status(200).json(results);
+    const query = `
+        SELECT * FROM pacientes;
+    `;
+
+    client.query(query, (error, results) => {
+        if (error) {
+            console.error("Error al obtener datos:", error);
+            res.status(500).json({ error: "Error al obtener datos" });
+        } else {
+            res.status(200).json(results.rows);
+        }
     });
-  });
+})
 
 
 
