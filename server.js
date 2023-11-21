@@ -320,7 +320,7 @@ app.get('/api/getData', async (req, res) => {
       const result = await postgresClient.query(query);
   
       res.status(200).json({
-        postgresData: result.rows,
+        data: result.rows,
       });
     } catch (error) {
       console.error('Error en la solicitud:', error);
