@@ -315,23 +315,17 @@ app.post('/api/savehistoryclinic', (req, res) => {
 
 app.get('/api/getData', async (req, res) => {
     try {
-      // Consulta a la base de datos de PostgreSQL
-    //   const postgresQuery = 'SELECT * FROM pacientes';
-    //   const postgresResult = await postgresClient.query(postgresQuery);
-  
       // Consulta a la base de datos de Supabase
-      const supabaseQuery = 'SELECT * FROM pacientes';
-      const { data: supabaseResult, error: supabaseError } = await supabase
+      const { data, error } = await supabase
         .from('pacientes')
         .select('*');
   
-      if (supabaseError) {
-        console.error('Error al obtener datos de Supabase:', supabaseError);
+      if (error) {
+        console.error('Error al obtener datos de Supabase:', error);
         res.status(500).json({ error: 'Error al obtener datos de Supabase' });
       } else {
         res.status(200).json({
-          postgresData: postgresResult.rows,
-          supabaseData: supabaseResult,
+          supabaseData: data,
         });
       }
     } catch (error) {
@@ -339,7 +333,6 @@ app.get('/api/getData', async (req, res) => {
       res.status(500).json({ error: 'Error en la solicitud' });
     }
   });
-
 
 
 app.listen(port, () => console.log(`server listening on port:  ${port}`));
