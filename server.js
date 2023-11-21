@@ -299,7 +299,7 @@ app.post('/api/savehistoryclinic', (req, res) => {
         )
     `;
 
-    client.query(query, (error, results) => {
+    postgresClient.query(query, (error, results) => {
         if (error) {
             console.error("Error al insertar datos:", error);
             res.status(500).json({ error: "Error al insertar datos" });
@@ -316,8 +316,8 @@ app.post('/api/savehistoryclinic', (req, res) => {
 app.get('/api/getData', async (req, res) => {
     try {
       // Consulta a la base de datos de PostgreSQL
-      const postgresQuery = 'SELECT * FROM pacientes';
-      const postgresResult = await postgresClient.query(postgresQuery);
+    //   const postgresQuery = 'SELECT * FROM pacientes';
+    //   const postgresResult = await postgresClient.query(postgresQuery);
   
       // Consulta a la base de datos de Supabase
       const supabaseQuery = 'SELECT * FROM pacientes';
